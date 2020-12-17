@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
+
+    <LinearLayout
+        android:weightSum="10"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Spinner
+            android:id="@+id/choiceSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:entries="@array/choice_array"
+            android:prompt="@string/choice_prompt"/>
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_weight="6"
+            android:layout_margin="10dp"
+            android:background="@drawable/add_image"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+        <TextView
+            android:id="@+id/label"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:layout_weight="2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+
+            <ImageView
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/image_capture"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:padding="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/image_capture"
+                android:elevation="120dp"
+                android:src="@drawable/ic_baseline_camera_capture" />
+
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/profile_gallery"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:padding="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/image_capture"
+                android:elevation="120dp"
+                android:src="@drawable/ic_baseline_image_gallery" />
+
+            <ImageView
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
