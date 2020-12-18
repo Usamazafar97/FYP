@@ -17,8 +17,8 @@ For training and testing, the dataset was gathered using fruits 360 dataset whic
 - Cucumber  - Train:1400 | Test:599
 - Lemon     - Train:5752 | Test:2464
 
-###### Complete Dataset can be downloaded from [(https://www.kaggle.com/usamarasheed/complete-fruit-veg-dataset-v1)]
-###### Trained CNN Classifier can be downloaded from [(https://www.kaggle.com/usamarasheed/multi-class-freshness-classifier)]
+###### Complete Dataset can be downloaded from https://www.kaggle.com/usamarasheed/complete-fruit-veg-dataset-v1
+###### Trained CNN Classifier can be downloaded from https://www.kaggle.com/usamarasheed/multi-class-freshness-classifier
 
 ## Implementation Details
 The network is trained for 50 epochs with a batch size of 32. The technique of early stopping is applied where if the loss is not reduced consecutively for 4 epochs then training is stopped to avoid the overfitting of the model and Model Checkpoint technique is used to save the best model i.e. with minimum validation loss. The average accuracy of CNN found by applying 3-fold cross validation for six independent classifier i.e. apple, banana, orange, tomato, lemon and cucumber is 86.72%, 85.85%, 87.39%, 88.58%, 86.38% and 85.97% respectively. Similarly the average accuracy of CNN found by applying 3-fold cross validation for single classifier is 83.75%. The training accuracies of six independent classifier for apple, banana, orange, tomato, lemon, and cucumber is 84.68%, 82.34%, 85.63%, 88.97%, 83.53% and 84.1% respectively and testing accuracies are 87.35%, 85.81%, 86.40%, 89.9%, 84.97% and 83.32% respectively. Similarly the training accuracy of Single Collective Classifier is 84.88% and testing accuracy is 84.2%.
@@ -26,12 +26,13 @@ Moreover, an Android Application has been developed using JAVA to make use of ou
 
 
 ## Files Details
-- FYPApp is the android application on Client Side
-- binary_class_training_testing.ipynb file contains code for training the CNN model on Training Data and then testing it on Test Data in binary class problem
-- multi_class_training_testing.ipynb file contains code for training the CNN model on Training Data and then testing it on Test Data in multi class problem
-- binary_class_3FoldCrossValidation.ipynb file contains code for performing 3Fold Cross Validation on CNN Classifier in a Binary Class Problem i.e. Fresh and Rotten classes only
-- multi_class_3FoldCrossValidation.ipynb file contains code for performing 3Fold Cross Validation on a CNN Classifier in a Multi Class Problem i.e. Fresh, Medium and Rotten classes
-- server-side-code.ipynb contains server side code that accepts images through sockets and then predicts their class py loading the trained CNN Classifier
+- **FYPApp** is the android application on Client Side
+- [**binary_class_training_testing.ipynb**](https://github.com/smrasheed14/FYP/blob/main/binary_class_training_testing.ipynb) file contains code for training the CNN model on Training Data and then testing it on Test Data in binary class problem
+- [**multi_class_training_testing.ipynb**](https://github.com/smrasheed14/FYP/blob/main/multi_class_training_testing.ipynb) file contains code for training the CNN model on Training Data and then testing it on Test Data in multi class problem
+- [**binary_class_3FoldCrossValidation.ipynb**](https://github.com/smrasheed14/FYP/blob/main/binary_class_3FoldCrossValidation.ipynb) file contains code for performing 3Fold Cross Validation on CNN Classifier in a Binary Class Problem i.e. Fresh and Rotten classes only
+- [**multi_class_3FoldCrossValidation.ipynb**](https://github.com/smrasheed14/FYP/blob/main/multi_class_3FoldCrossValidation.ipynb) file contains code for performing 3Fold Cross Validation on a CNN Classifier in a Multi Class Problem i.e. Fresh, Medium and Rotten classes
+- [**server-side-code.ipynb**](https://github.com/smrasheed14/FYP/blob/main/server-side-code.ipynb) contains server side code that accepts images through sockets and then predicts their class py loading the trained CNN Classifier
+- [**create_labeled_csv.ipynb**](https://github.com/smrasheed14/FYP/blob/main/create_labeled_csv.ipynb) contains code for renaming the files in a folder in a specific way so that their names are different from all files residing in other folders. This is done so that all files have different names so that they can be labeled in csv file. It also contains code for assigning labels to the images by saving filename and its label in a .csv file according to the folder in which it resides. For example: if an image resides in "fresh" folder, than it will be assigned label "fresh" in the csv file. This csv file is required to perform 3Fold cross validation.
 
 ## App Manual
 1. Install the Application on Android Device
