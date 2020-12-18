@@ -26,7 +26,7 @@ Moreover, an Android Application has been developed using JAVA to make use of ou
 
 
 ## Files Details
-- **FYPApp** is the android application on Client Side
+- [**FYPApp**](https://github.com/smrasheed14/FYP/tree/main/FYPApp) is the android application on Client Side
 - [**binary_class_training_testing.ipynb**](https://github.com/smrasheed14/FYP/blob/main/binary_class_training_testing.ipynb) file contains code for training the CNN model on Training Data and then testing it on Test Data in binary class problem
 - [**multi_class_training_testing.ipynb**](https://github.com/smrasheed14/FYP/blob/main/multi_class_training_testing.ipynb) file contains code for training the CNN model on Training Data and then testing it on Test Data in multi class problem
 - [**binary_class_3FoldCrossValidation.ipynb**](https://github.com/smrasheed14/FYP/blob/main/binary_class_3FoldCrossValidation.ipynb) file contains code for performing 3Fold Cross Validation on CNN Classifier in a Binary Class Problem i.e. Fresh and Rotten classes only
