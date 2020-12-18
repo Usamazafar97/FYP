@@ -36,6 +36,6 @@ Moreover, an Android Application has been developed using JAVA to make use of ou
 ## App Manual
 1. Install the Application on Android Device
 2. Open the Application
-3. Select Category of Fruit/Vegetable from dropdown list.
-4. Select Capture Image to capture image using camera/ Select Load Picture to load from Gallery
+3. Select Capture Image to capture image using camera/ Select Load Picture to load from Gallery
+4. Select Category of Fruit/Vegetable from dropdown list.
 5. After selecting image, its freshness label would be displayed after prediction from CNN model from the server.
