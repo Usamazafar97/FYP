@@ -10,12 +10,12 @@ For training and testing, the dataset was gathered using fruits 360 dataset whic
 - Total Training Images = 27529
 - Total Test Images = 13545
 
-- Apple   - Train:6854 ; Test:2940
-- Banana  - Train:3812 ; Test:1632
-- Orange  - Train:3468 ; Test:1487
-- Tomato  - Train:6647 ; Test:3187
-- Cucumber - Train:1400 ; Test:599
-- Lemon - Train:5752 ; Test:2464
+- Apple     - Train:6854 | Test:2940
+- Banana    - Train:3812 | Test:1632
+- Orange    - Train:3468 | Test:1487
+- Tomato    - Train:6647 | Test:3187
+- Cucumber  - Train:1400 | Test:599
+- Lemon     - Train:5752 | Test:2464
 
 ###### Complete Dataset can be downloaded from [(https://www.kaggle.com/usamarasheed/complete-fruit-veg-dataset-v1)]
 ###### Trained CNN Classifier can be downloaded from [(https://www.kaggle.com/usamarasheed/multi-class-freshness-classifier)]
