@@ -3,6 +3,8 @@ package com.example.fypapp;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import android.content.ActivityNotFoundException;
@@ -14,9 +16,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,7 +49,13 @@ public class FreshnessDetector extends AppCompatActivity {
     Handler handler;
     byte[] byteImage;
     String encodedImage;
-//    static final int REQUEST_IMAGE_CAPTURE = 2;
+    String selectedOption;
+    Button checkFreshness;
+    ProgressBar progressBar;
+    LinearLayout icons;
+    TextView chooseText;
+    String serverIP = "192.168.8.103";
+    int serverPORT = 5002;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,25 +68,42 @@ public class FreshnessDetector extends AppCompatActivity {
         label.setVisibility(View.GONE);
         image_capture = findViewById(R.id.image_capture);
         profile_gallery = findViewById(R.id.profile_gallery);
+        handler = new Handler();
+        checkFreshness = findViewById(R.id.checkFreshness);
+        progressBar = findViewById(R.id.progressBar_cyclic);
+        chooseText = findViewById(R.id.chooseOption);
+        icons = findViewById(R.id.icons);
+        //disable check freshness button
+        checkFreshness.setEnabled(false);
 
-        profile_gallery.setOnClickListener(new View.OnClickListener() {
+        //if select type choice spinner is touched, then enable check freshness button
+        choiceSpinner.setOnTouchListener(new View.OnTouchListener() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
-            public void onClick(View v) {
-                Intent pickPhoto = new Intent(Intent.ACTION_OPEN_DOCUMENT,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pickPhoto, 1);
-
-                JSONObject object=new JSONObject();
-                try {
-                    object.put("image",encodedImage);
-                    predictFreshness(object.toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                enableCheckFreshness();
+                return false;
             }
         });
 
+        //register listener on gallery icon for loading image from gallery
+        profile_gallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                getIntent.setType("image/*");
+
+                Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                pickIntent.setType("image/*");
+
+                Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
+                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
+
+                startActivityForResult(chooserIntent, 1);
+            }
+        });
+
+        //register listener on camera icon for capturing image from camera
         image_capture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,46 +111,56 @@ public class FreshnessDetector extends AppCompatActivity {
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 try {
                     startActivityForResult(takePictureIntent, 0);
-                    JSONObject object=new JSONObject();
-                    try {
-                        object.put("image",encodedImage);
-                        predictFreshness(object.toString());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
                 } catch (ActivityNotFoundException e) {
                     // display error state to the user
                     Toast.makeText(FreshnessDetector.this, "Camera not opening", Toast.LENGTH_SHORT).show();
                 }
 
-//                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-//                startActivityForResult(cameraIntent, 0);
+            }
+        });
+        //register listener on check freshness button for sending image to server for freshness prediction
+        checkFreshness.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                JSONObject object=new JSONObject();
+                try {
+                    checkFreshness.setVisibility(View.GONE);
+                    choiceSpinner.setVisibility(View.GONE);
+                    icons.setVisibility(View.GONE);
+                    chooseText.setVisibility(View.GONE);
 
+                    progressBar.setVisibility(View.VISIBLE);
+                    //put encoded image in json object
+                    object.put("image",encodedImage);
+                    //create thread for sending image to server and getting response
+                    predictFreshness(object.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
-
-//        String choice = "Apple";
-//        choice = String.valueOf(choiceSpinner.getSelectedItem());
 
 
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+        choiceSpinner.setSelection(0);
         switch (requestCode) {
             case 0:
                 if (resultCode == RESULT_OK) {
                     Bundle extras = imageReturnedIntent.getExtras();
                     Bitmap imageBitmap = (Bitmap) extras.get("data");
-
+                    //set image in imageview
                     image.setImageBitmap(imageBitmap);
-                    getEncodedImage(imageBitmap);
+                    //resize image
+                    imageBitmap = Bitmap.createScaledBitmap(imageBitmap, 224, 224, false);
+                    getEncodedImage(imageBitmap); //encode image in base64 format
 
-
-//                    Bitmap image = (Bitmap) imageReturnedIntent.getExtras().get("data");
-//                    //ImageView imageview = (ImageView) findViewById(R.id.ImageView01); //sets imageview as the bitmap
-//                    image.setImageBitmap(image);
+                    checkFreshness.setVisibility(View.VISIBLE);
+                    choiceSpinner.setVisibility(View.VISIBLE);
+                    label.setVisibility(View.GONE);
 
                 }
 
@@ -131,14 +171,18 @@ public class FreshnessDetector extends AppCompatActivity {
                     image.setImageURI(selectedImage);
                     try{
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-                        getEncodedImage(bitmap);
+                        //resize image for server
+                        bitmap = Bitmap.createScaledBitmap(bitmap, 224, 224, false);
+                        getEncodedImage(bitmap); //encode image in base64 format
+
+                        checkFreshness.setVisibility(View.VISIBLE);
+                        choiceSpinner.setVisibility(View.VISIBLE);
+                        label.setVisibility(View.GONE);
                     }
                     catch (Exception e)
                     {
                         Toast.makeText(FreshnessDetector.this,"Error Occured",Toast.LENGTH_SHORT);
                     }
-//                    image.setPadding(0, 0, 0, 0);
-                    //c.setPic(selectedImage.toString());
                 }
                 break;
         }
@@ -149,31 +193,47 @@ public class FreshnessDetector extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    Socket s=new Socket("172.16.49.17",5000);
+                    //create socket
+                    Socket s=new Socket(serverIP,serverPORT);
+                    //get output stream of socket
                     final OutputStream out=s.getOutputStream();
+                    //link print writer with output stream for easy sending
                     final PrintWriter writer=new PrintWriter(out);
-                    writer.println(img);
-                    writer.flush();
-                    BufferedReader data=new BufferedReader(new InputStreamReader(s.getInputStream()));
-                    final String st=data.readLine();
+                    writer.write(img);  //send image to server
+                    writer.flush();     //clear buffer
+                    BufferedReader data=new BufferedReader(new InputStreamReader(s.getInputStream()));  //reader for server msg
+                    final String st=data.readLine();    //read server response in a single line
                     handler.post(new Runnable() {
+                        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
                         @Override
                         public void run() {
-                            if(st.trim().length()!=0)
+                            if(st.trim().length()!=0)   //trim server response by removing unnecessary characters at the end
                             {
+                                disableCheckFreshness();        //disable check freshness button
+                                selectedOption = choiceSpinner.getSelectedItem().toString(); //get selected item from spinner
+                                if(selectedOption.equalsIgnoreCase("Select Type"))
+                                {
+                                    selectedOption = "Apple";
+                                }
+                                checkFreshness.setVisibility(View.GONE);
+                                choiceSpinner.setVisibility(View.GONE);
                                 try {
                                     JSONObject recData=new JSONObject(st);
-                                    String lbl=recData.getString("label");
+                                    String lbl=recData.getString("label");  //read data corresponding to "label" key
                                     if(lbl.equalsIgnoreCase("fresh"))
                                     {
-                                        label.setText("Fresh");
+                                        label.setText("Fresh "+selectedOption);
                                     }
                                     else if(lbl.equalsIgnoreCase("medium")) {
-                                        label.setText("Mild Rotten");
+                                        label.setText("Medium Fresh "+selectedOption);
                                     }
                                     else{
-                                        label.setText("Rotten");
+                                        label.setText("Rotten "+selectedOption);
                                     }
+
+                                    progressBar.setVisibility(View.GONE);
+                                    icons.setVisibility(View.VISIBLE);
+                                    chooseText.setVisibility(View.VISIBLE);
                                     label.setVisibility(View.VISIBLE);
 
                                 } catch (JSONException e) {
@@ -193,10 +253,26 @@ public class FreshnessDetector extends AppCompatActivity {
         thread.start();
     }
 
+    //encode image in base64 format
     public void getEncodedImage(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         byteImage = stream.toByteArray();
         encodedImage = Base64.encodeToString(byteImage, Base64.DEFAULT);
+//        Log.d("encodedImage", encodedImage);
+
+    }
+
+    //enable check freshness button
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    public void enableCheckFreshness(){
+        checkFreshness.setEnabled(true);
+        checkFreshness.setBackground(ContextCompat.getDrawable(FreshnessDetector.this,R.drawable.black_round));
+    }
+    //disable check freshness button
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    public void disableCheckFreshness(){
+        checkFreshness.setEnabled(false);
+        checkFreshness.setBackground(ContextCompat.getDrawable(FreshnessDetector.this,R.drawable.grey_round));
     }
 }

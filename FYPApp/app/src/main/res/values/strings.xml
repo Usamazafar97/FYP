@@ -1,10 +1,11 @@
 <resources>
     <string name="app_name">FYPApp</string>
-
     <string name="choice_prompt">Select one</string>
     <string-array name="choice_array">
+        <item>Select Type</item>
         <item>Apple</item>
         <item>Banana</item>
+        <item>Lemon</item>
         <item>Orange</item>
         <item>Tomato</item>
         <item>Cucumber</item>

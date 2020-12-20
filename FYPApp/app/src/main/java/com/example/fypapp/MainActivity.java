@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //timer for displaying logo screen
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -25,6 +26,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
                 finish();
             }
-        }, 5000);
+        }, 800);
     }
 }

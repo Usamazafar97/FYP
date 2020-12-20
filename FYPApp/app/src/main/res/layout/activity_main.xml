@@ -15,12 +15,13 @@
         android:layout_centerVertical="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/image" />
+        android:src="@drawable/logo" />
 
     <TextView
         android:id="@+id/text"
-        android:text="FruitVeg App"
+        android:text="FruitVeg Freshness"
         android:textSize="36dp"
+        android:textStyle="bold"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_below="@id/image"
