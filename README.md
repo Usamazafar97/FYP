@@ -31,12 +31,13 @@ Moreover, an Android Application has been developed using JAVA to make use of ou
 - [**multi_class_training_testing.ipynb**](https://github.com/smrasheed14/FYP/blob/main/multi_class_training_testing.ipynb) file contains code for training the CNN model on Training Data and then testing it on Test Data in multi class problem
 - [**binary_class_3FoldCrossValidation.ipynb**](https://github.com/smrasheed14/FYP/blob/main/binary_class_3FoldCrossValidation.ipynb) file contains code for performing 3Fold Cross Validation on CNN Classifier in a Binary Class Problem i.e. Fresh and Rotten classes only
 - [**multi_class_3FoldCrossValidation.ipynb**](https://github.com/smrasheed14/FYP/blob/main/multi_class_3FoldCrossValidation.ipynb) file contains code for performing 3Fold Cross Validation on a CNN Classifier in a Multi Class Problem i.e. Fresh, Medium and Rotten classes
-- [**server-side-code.ipynb**](https://github.com/smrasheed14/FYP/blob/main/server-side-code.ipynb) contains server side code that accepts images through sockets and then predicts their class py loading the trained CNN Classifier
+- [**server_side_code.ipynb**](https://github.com/smrasheed14/FYP/blob/main/server_side_code.ipynb) contains server side code that accepts images through sockets and then predicts their class py loading the trained CNN Classifier
 - [**create_labeled_csv.ipynb**](https://github.com/smrasheed14/FYP/blob/main/create_labeled_csv.ipynb) contains code for renaming the files in a folder in a specific way so that their names are different from all files residing in other folders. This is done so that all files have different names so that they can be labeled in csv file. It also contains code for assigning labels to the images by saving filename and its label in a .csv file according to the folder in which it resides. For example: if an image resides in "fresh" folder, than it will be assigned label "fresh" in the csv file. This csv file is required to perform 3Fold cross validation.
 
 ## App Manual
 1. Install the Application on Android Device
 2. Open the Application
-3. Select Capture Image to capture image using camera/ Select Load Picture to load from Gallery
+3. Select Capture Icon to capture image using camera/ Select Gallery Icon to load from Gallery
 4. Select Category of Fruit/Vegetable from dropdown list.
-5. After selecting image, its freshness label would be displayed after prediction from CNN model from the server.
+5. Tap the Check button
+5. After tapping Check button, freshness level of image would be displayed after prediction from CNN model on the server.
