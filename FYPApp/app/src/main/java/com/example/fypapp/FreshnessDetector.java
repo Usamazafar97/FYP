@@ -54,7 +54,7 @@ public class FreshnessDetector extends AppCompatActivity {
     ProgressBar progressBar;
     LinearLayout icons;
     TextView chooseText;
-    String serverIP = "192.168.8.103";
+    String serverIP = "192.168.8.102";
     int serverPORT = 5002;
 
     @Override
